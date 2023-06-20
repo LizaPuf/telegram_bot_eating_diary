@@ -1,6 +1,16 @@
 import telebot
 import commands
 
+'''
+1) Поправить функцию удаления. Одновременно выводит команда не найдена и щапись удалена
+2) Создать функции по добавлению эмоций 
+3) Создать функцию по удалению эмоций 
+4) Добавить функцию вывода в тг бот приемов пищи - done
+5) Добавить функцию вывода в тг бот эмоций 
+6) Добавить информационую справку о интуитивном питании 
+7) Добавить информационную справку о возможностях тг бота 
+'''
+
 TOKEN_API = '5958215581:AAGxUmz9lfKBWIsRymKArGI-b0WTvUkUdnw'
 
 bot = telebot.TeleBot(TOKEN_API)
@@ -9,7 +19,7 @@ bot = telebot.TeleBot(TOKEN_API)
 def main(message):
     bot.send_message(message.chat.id, 'Рада видеть вас в своем телеграм-боте!')
 
-@bot.message_handler(commands=['add'])
+@bot.message_handler(commands=['add_meal'])
 def help(message):
     commands.add_eating(message, commands.eating_diary)
     bot.send_message(message.chat.id, 'Команда добавлена')
@@ -26,6 +36,15 @@ def help(message):
 
     bot.send_message(message.chat.id, 'Запись удалена')
     print(commands.eating_diary)
+
+@bot.message_handler(commands=['add_emotions'])
+def help(message):
+   bot.send_message(message.chat.id, 'Работает')
+
+@bot.message_handler(commands=['show_eat'])
+def help(message):
+    formated_text = commands.show_eat(message.text, commands.eating_diary)
+    bot.send_message(message.chat.id, formated_text)
 
 
 

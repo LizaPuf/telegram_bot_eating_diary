@@ -15,6 +15,18 @@ def help(message):
     bot.send_message(message.chat.id, 'Команда добавлена')
     print(commands.eating_diary)
 
+@bot.message_handler(commands=['del'])
+def help(message):
+    try:
+        commands.del_eating(message, commands.eating_diary)
+    except commands.BedDeleteCommand:
+        bot.send_message(message.chat.id, 'Неправильно введена команда')
+    except KeyError:
+        bot.send_message(message.chat.id, 'Неправильно введена дата или прием пищи')
+
+    bot.send_message(message.chat.id, 'Запись удалена')
+    print(commands.eating_diary)
+
 
 
 #@bot.message_handler(content_types=['text'])

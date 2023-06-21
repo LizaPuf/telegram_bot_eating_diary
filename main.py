@@ -4,13 +4,17 @@ import constants
 
 
 TOKEN_API = '5958215581:AAGxUmz9lfKBWIsRymKArGI-b0WTvUkUdnw'
+USER_ID = ''
 
 bot = telebot.TeleBot(TOKEN_API)
 
+
 @bot.message_handler(commands=['start'])
 def main(message):
-    bot.send_message(message.chat.id, 'Рада видеть вас в своем телеграм-боте!')
+    username = message.from_user.username
+    bot.send_message(message.chat.id, f'{username}, рада видеть вас в своем телеграм-боте!')
     bot.send_message(message.chat.id, constants.help)
+    USER_ID = message.from_user.id
 
 @bot.message_handler(commands=['add_meal'])
 def help(message):

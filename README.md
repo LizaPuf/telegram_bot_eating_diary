@@ -27,11 +27,11 @@ To start using NutriBot, follow these simple steps:
 
 ## Commands
 - `/start` - Starts the bot and displays the main menu
-- `/add_eat` - Add a food item to the diary
+- `/add_meal` - Add a food item to the diary
 - `/add_emotion` - Document emotions related to food intake
 - `/show_eat` - Display food diary summary
 - `/show_emotions` - Display food diary summary
-- `/del_eat` - Delete a selected meal or record for the whole day
+- `/del_meal` - Delete a selected meal or record for the whole day
 - `/del_emotions` - Delete a selected emotion or record for the whole day
 - `/INFO` - Show a small help about intuitive nutrition and a hunger scale
 

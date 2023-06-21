@@ -27,19 +27,30 @@ def help(message):
 
 @bot.message_handler(commands=['show_eat'])
 def help(message):
-    formated_text = commands.show_eat(message.text, commands.eating_diary)
-    bot.send_message(message.chat.id, formated_text)
+    try:
+        formated_text = commands.show_eat(message.text, commands.eating_diary)
+        bot.send_message(message.chat.id, formated_text)
+    except commands.BedCommand:
+        bot.send_message(message.chat.id, 'Неправильно введена команда')
+    except KeyError:
+        bot.send_message(message.chat.id, 'Неправильно введена дата или прием пищи')
 
 @bot.message_handler(commands=['show_emotions'])
 def help(message):
-    formated_text = commands.show_emotions(message.text, commands.emotions_diary)
-    bot.send_message(message.chat.id, formated_text)
+    try:
+        formated_text = commands.show_emotions(message.text, commands.emotions_diary)
+        bot.send_message(message.chat.id, formated_text)
+    except commands.BedCommand:
+        bot.send_message(message.chat.id, 'Неправильно введена команда')
+    except KeyError:
+        bot.send_message(message.chat.id, 'Неправильно введена дата или прием пищи')
+
 
 @bot.message_handler(commands=['del_eat'])
 def help(message):
     try:
         commands.del_eating(message, commands.eating_diary)
-    except commands.BedDeleteCommand:
+    except commands.BedCommand:
         bot.send_message(message.chat.id, 'Неправильно введена команда')
     except KeyError:
         bot.send_message(message.chat.id, 'Неправильно введена дата или прием пищи')
@@ -51,7 +62,7 @@ def help(message):
 def help(message):
     try:
         commands.del_emotions(message, commands.emotions_diary)
-    except commands.BedDeleteCommand:
+    except commands.BedCommand:
         bot.send_message(message.chat.id, 'Неправильно введена команда')
     except KeyError:
         bot.send_message(message.chat.id, 'Неправильно введена дата или прием пищи')

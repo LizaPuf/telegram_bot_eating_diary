@@ -1,60 +1,77 @@
 from collections import defaultdict
 
-eating_diary = defaultdict(dict)
-emotions_diary = defaultdict(dict)
 
-class BedCommand(Exception):
+eating_diary = defaultdict(lambda: defaultdict(dict))
+emotions_diary = defaultdict(lambda: defaultdict(dict))
+
+
+class BadCommand(Exception):
     pass
 
 
-def add_eating(message, eating_diary):
+def add_eating(user_id, message, eating_diary):
     split_message = message.text.split(maxsplit=5)
+    if len(split_message) == 1:
+        raise BadCommand
     _, date, meal, *rest = split_message
-    eating_diary[date][meal] = rest
+    eating_diary[user_id][date][meal] = rest
 
-def add_emotions(message, emotions_diary):
-    _, date, meal, *rest = message.text.split(maxsplit=3)
-    emotions_diary[date][meal] = rest
 
-def show_eat(message, eating_diary):
+def add_emotions(user_id, message, emotions_diary):
+    split_message = message.text.split(maxsplit=3)
+    if len(split_message) == 1:
+         raise BadCommand
+    _, date, meal, *rest = split_message
+    emotions_diary[user_id][date][meal] = rest
+
+
+def show_eat(user_id,message, eating_diary):
     split_message = message.split()
     result = []
-    if split_message[1] in eating_diary:
-        for meal, info in eating_diary[split_message[1]].items():
+    user_eating_diary = eating_diary[user_id]
+    if len(split_message) == 1:
+        raise BadCommand
+    if split_message[1] in user_eating_diary:
+        for meal, info in user_eating_diary[split_message[1]].items():
             result.append(f'{meal} - {info[-1]}')
             result.append(f'чувство голода до приема пищи - {info[0]}')
             result.append(f'чувство голода после приема пищи - {info[1]}')
             result.append('')
         return '\n'.join(result)
-    else:
-        raise BedCommand
-
-def show_emotions(message, emotions_diary):
-    split_message = message.split()
-    result = []
-    if split_message[1] in emotions_diary:
-        for meal, info in emotions_diary[split_message[1]].items():
-            result.append(f'{meal} - {info[-1]}')
         return '\n'.join(result)
     else:
-        raise BedCommand
+        raise BadCommand
 
 
+def show_emotions(user_id, message, emotions_diary):
+    split_message = message.split()
+    result = []
+    user_emotions_diary = emotions_diary[user_id]
+    if len(split_message) == 1:
+        raise BadCommand
+    if split_message[1] in user_emotions_diary:
+        for meal, info in user_emotions_diary[split_message[1]].items():
+            result.append(f'{meal} - {info[-1]}')
+        return '\n'.join(result)
 
-def del_eating(message, eating_diary):
+
+def del_eating(user_id, message, eating_diary):
     split_message = message.text.split()
+    user_eating_diary = eating_diary[user_id]
     if len(split_message) == 2:
-        del eating_diary[split_message[1]]
+        del user_eating_diary[split_message[1]]
     elif len(split_message) > 2:
-        del eating_diary[split_message[1]][split_message[2]]
-    else:
-        raise BedCommand
+        del user_eating_diary [split_message[1]][split_message[2]]
+    elif len(split_message) == 1:
+        raise BadCommand
 
-def del_emotions(message, emotions_diary):
+
+def del_emotions(user_id,message, emotions_diary):
     split_message = message.text.split()
+    user_emotions_diary = emotions_diary[user_id]
     if len(split_message) == 2:
-        del emotions_diary[split_message[1]]
+        del user_emotions_diary[split_message[1]]
     elif len(split_message) > 2:
-        del emotions_diary[split_message[1]][split_message[2]]
+        del user_emotions_diary[split_message[1]][split_message[2]]
     else:
-        raise BedCommand
+        raise BadCommand
